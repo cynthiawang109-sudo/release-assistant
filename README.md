@@ -14,3 +14,5 @@ Generic process content for the fictional TaskFlow project.
 |---|---|
 | `release-checklist.md` | The gate a release must pass before production |
 | `change-process.md` | How changes are proposed, reviewed, and rolled out |
+| `skills/release-check/SKILL.md` | Agent skill: evaluate a candidate release against the checklist with live evidence (CI runs, merged PRs, review state, open tickets) and draft release notes |
+| `scripts/release-check.ps1` / `.sh` | One-command runner for the skill via Codex (draft-first: writes a local draft file, posts nothing) |

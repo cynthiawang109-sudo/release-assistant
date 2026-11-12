@@ -1,0 +1,3 @@
+# Local draft assessments written by the release-check skill (draft-first:
+# they are reviewed by a human before anything is posted or committed).
+*.draft.md
