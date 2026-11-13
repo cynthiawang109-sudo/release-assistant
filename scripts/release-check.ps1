@@ -8,13 +8,19 @@
 # Usage:
 #   .\scripts\release-check.ps1 -App demo-app -Version v1.1.0 -Since 2026-11-01
 #   .\scripts\release-check.ps1 -App demo-app -Version v1.1.0 -Since v1.0.0 -OutFile C:\drafts\rc.md
+#
+# If Codex reports "Failed to create unified exec process: timed out
+# ... connecting runner pipe-in", its sandboxed shell runner is wedged
+# on this machine; rerun with -Sandbox danger-full-access.
 
 param(
     [Parameter(Mandatory = $true)][string]$App,
     [Parameter(Mandatory = $true)][string]$Version,
     [Parameter(Mandatory = $true)][string]$Since,
     [string]$OutFile,
-    [string]$CodexExe
+    [string]$CodexExe,
+    [ValidateSet('read-only', 'workspace-write', 'danger-full-access')]
+    [string]$Sandbox = 'workspace-write'
 )
 
 # Note: no $ErrorActionPreference = 'Stop' here - with it, PowerShell 5.1
@@ -44,7 +50,7 @@ Then reply with the recommendation (GO or NO-GO), the blockers if any, and the d
 
 Push-Location $root
 try {
-    $output = $null | & $CodexExe exec --sandbox workspace-write $prompt 2>&1 | Out-String
+    $output = $null | & $CodexExe exec --sandbox $Sandbox $prompt 2>&1 | Out-String
     if ($LASTEXITCODE -ne 0) { throw "codex exec exited with $LASTEXITCODE" }
     Write-Output $output
 } finally {

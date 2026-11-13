@@ -33,5 +33,8 @@ Then reply with the recommendation (GO or NO-GO), the blockers if any, and the d
 EOF
 
 cd "$ROOT"
-codex exec --sandbox workspace-write "$PROMPT" </dev/null
+# SANDBOX override exists for machines where Codex's sandboxed shell
+# runner is wedged ("Failed to create unified exec process: timed out
+# ... connecting runner pipe-in"): SANDBOX=danger-full-access.
+codex exec --sandbox "${SANDBOX:-workspace-write}" "$PROMPT" </dev/null
 echo "Draft (if Codex completed): $OUT"
